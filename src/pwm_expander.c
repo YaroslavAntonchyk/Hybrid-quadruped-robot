@@ -71,25 +71,7 @@ void delay_ms(int time)
 	while(timer_ms > 0){};
 }
 
-void sequence()
-{
-	int delay = 300;
-	set_servo_angle(11, 30, PCA9685_ADDR1);
-	set_servo_angle(9, 108, PCA9685_ADDR1);
-	delay_ms(delay);
 
-	set_servo_angle(11, 11, PCA9685_ADDR1);
-	set_servo_angle(9, 88, PCA9685_ADDR1);
-	delay_ms(delay);
-
-	set_servo_angle(11, 0, PCA9685_ADDR1);
-	set_servo_angle(9, 142, PCA9685_ADDR1);
-	delay_ms(delay);
-
-	set_servo_angle(11, 45, PCA9685_ADDR1);
-	set_servo_angle(9, 142, PCA9685_ADDR1);
-	delay_ms(delay);
-}
 
 void init_pca9685()
 {
@@ -115,6 +97,6 @@ void init_pca9685()
 	// configure timer interrupt frequency, SystemCoreClock is a CPU frequency
 	SysTick_Config(SystemCoreClock/1000);
 
-	// pca9685_config(PCA9685_ADDR1);
-	pca9685_config(PCA9685_ADDR2);
+	pca9685_config(PCA9685_ADDR1);
+	// pca9685_config(PCA9685_ADDR2);
 }
