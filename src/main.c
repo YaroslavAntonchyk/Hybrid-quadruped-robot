@@ -15,8 +15,9 @@
 
 int main(void)
 {
-	init_all();
-	// printf("hello\n");
+	init_pca9685();
+	init_uart2();
+
 	while(1)
 	{
 //		while(!flag);

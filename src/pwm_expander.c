@@ -9,7 +9,6 @@
 #include "stdio.h"
 #include "pwm_expander.h"
 
-
 void i2c_set_addr(uint32_t addr, uint8_t device_addr)
 {
 	I2C_GenerateSTART(I2C1, ENABLE);
@@ -34,7 +33,6 @@ void i2c_write(uint32_t addr, const void* data, int size, uint8_t device_addr)
 	}
 	I2C_GenerateSTOP(I2C1, ENABLE);
 }
-
 
 void pca9685_config(uint8_t device_addr)
 {
@@ -73,95 +71,6 @@ void delay_ms(int time)
 	while(timer_ms > 0){};
 }
 
-void send_char(char c)
-{
-	while(USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
-	USART_SendData(USART2, c);
-}
-
-
-char read_char(void)
-{
-	if (USART_GetFlagStatus(USART2, USART_FLAG_RXNE))
-	{
-	    return USART_ReceiveData(USART2);
-	}
-	return 0;
-}
-
-int __io_putchar(int c)
-{
-	if(c == '\n')
-		send_char('\r');
-	send_char(c);
-	return c;
-}
-
-int constraint(int var, int bottom_lim, int upper_lim)
-{
-	if(var > upper_lim)
-		return upper_lim;
-	else if(var < bottom_lim)
-		return bottom_lim;
-	else
-		return var;
-}
-
-void USART2_IRQHandler()
-{
-	incoming_byte = read_char();
-	if ((incoming_byte >= 48) && (incoming_byte <= 57))
-	{
-		incoming_byte -= 48;
-		buff = buff*10 + incoming_byte;
-	}
-	else if (incoming_byte == SERVO1_TERM)
-	{
-		servo1 = constraint(buff, 0, 180);
-		printf("Servo1: %d\n", servo1);
-		buff = 0;
-	}
-	else if (incoming_byte == SERVO2_TERM)
-	{
-		servo2 = constraint(buff, 0, 180);
-		printf("Servo2: %d\n", servo2);
-		buff = 0;
-	}
-	else if (incoming_byte == SERVO3_TERM)
-	{
-		servo3 = constraint(buff, 0, 180);
-		printf("Servo3: %d\n", servo3);
-		buff = 0;
-	}
-	else if (incoming_byte == SERVO4_TERM)
-	{
-		servo4 = constraint(buff, 0, 180);
-		printf("Servo4: %d\n", servo4);
-		buff = 0;
-	}
-	else if (incoming_byte == SERVO5_TERM)
-	{
-		servo5 = constraint(buff, 0, 180);
-		printf("Servo5: %d\n", servo5);
-		buff = 0;
-	}
-	else if (incoming_byte == SERVO6_TERM)
-	{
-		servo6 = constraint(buff, 0, 180);
-		printf("Servo6: %d\n", servo6);
-		buff = 0;
-	}
-	else if (incoming_byte == 'g')
-	{
-		flag = 1;
-		printf("Sequence\n");
-		buff = 0;
-	}
-	else
-		printf("Incorrect input\n");
-	USART_ClearITPendingBit(USART2, USART_IT_RXNE);
-}
-
 void sequence()
 {
 	int delay = 300;
@@ -182,39 +91,15 @@ void sequence()
 	delay_ms(delay);
 }
 
-void init_all()
+void init_pca9685()
 {
 	GPIO_InitTypeDef gpio;
 	I2C_InitTypeDef i2c;
-	USART_InitTypeDef uart;
-	NVIC_InitTypeDef nvic;
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
-	//  configure pins for UART
-	GPIO_StructInit(&gpio);
-	gpio.GPIO_Pin = GPIO_Pin_2;
-	gpio.GPIO_Mode = GPIO_Mode_AF_PP;
-	GPIO_Init(GPIOA, &gpio);
 
-	gpio.GPIO_Pin = GPIO_Pin_3;
-	gpio.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_Init(GPIOA, &gpio);
-
-	USART_StructInit(&uart);
-	uart.USART_BaudRate = 115200;
-	USART_Init(USART2, &uart);
-
-	USART_Cmd(USART2, ENABLE);
-	//  configure interruption for UART
-	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);
-	nvic.NVIC_IRQChannel = USART2_IRQn;
-	nvic.NVIC_IRQChannelPreemptionPriority = 0x00;
-	nvic.NVIC_IRQChannelSubPriority = 0x00;
-	nvic.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&nvic);
 
 	GPIO_StructInit(&gpio);
 	gpio.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7; // SCL, SDA
@@ -232,5 +117,4 @@ void init_all()
 
 	// pca9685_config(PCA9685_ADDR1);
 	pca9685_config(PCA9685_ADDR2);
-
 }

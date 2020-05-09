@@ -18,8 +18,6 @@
 #define SERVO6_TERM 'f'
 
 volatile uint32_t timer_ms;
-volatile uint8_t incoming_byte;
-volatile uint16_t buff;
 volatile uint8_t servo1;
 volatile uint8_t servo2;
 volatile uint8_t servo3;
@@ -37,10 +35,9 @@ void delay_ms(int time);
 void send_char(char c);
 char read_char(void);
 int __io_putchar(int c);
-int constraint(int var, int bottom_lim, int upper_lim);
 void USART2_IRQHandler();
 void sequence();
-void init_all();
+void init_pca9685();
 
 
 

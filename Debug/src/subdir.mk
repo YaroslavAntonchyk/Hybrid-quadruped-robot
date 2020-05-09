@@ -8,21 +8,24 @@ C_SRCS += \
 ../src/pwm_expander.c \
 ../src/pwm_expander_working.c \
 ../src/syscalls.c \
-../src/system_stm32f10x.c 
+../src/system_stm32f10x.c \
+../src/uart.c 
 
 OBJS += \
 ./src/main.o \
 ./src/pwm_expander.o \
 ./src/pwm_expander_working.o \
 ./src/syscalls.o \
-./src/system_stm32f10x.o 
+./src/system_stm32f10x.o \
+./src/uart.o 
 
 C_DEPS += \
 ./src/main.d \
 ./src/pwm_expander.d \
 ./src/pwm_expander_working.d \
 ./src/syscalls.d \
-./src/system_stm32f10x.d 
+./src/system_stm32f10x.d \
+./src/uart.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
