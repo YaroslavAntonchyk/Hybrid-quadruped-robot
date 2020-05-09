@@ -1,4 +1,5 @@
-src/main.o: ../src/main.c F:/STM_projects/Yasha/CMSIS/device/stm32f10x.h \
+src/pwm_expander.o: ../src/pwm_expander.c \
+ F:/STM_projects/Yasha/CMSIS/device/stm32f10x.h \
  F:/STM_projects/Yasha/CMSIS/core/core_cm3.h \
  F:/STM_projects/Yasha/CMSIS/core/core_cmInstr.h \
  F:/STM_projects/Yasha/CMSIS/core/core_cmFunc.h \

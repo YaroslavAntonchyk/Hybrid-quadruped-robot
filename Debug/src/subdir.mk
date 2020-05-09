@@ -5,16 +5,22 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../src/main.c \
+../src/pwm_expander.c \
+../src/pwm_expander_working.c \
 ../src/syscalls.c \
 ../src/system_stm32f10x.c 
 
 OBJS += \
 ./src/main.o \
+./src/pwm_expander.o \
+./src/pwm_expander_working.o \
 ./src/syscalls.o \
 ./src/system_stm32f10x.o 
 
 C_DEPS += \
 ./src/main.d \
+./src/pwm_expander.d \
+./src/pwm_expander_working.d \
 ./src/syscalls.d \
 ./src/system_stm32f10x.d 
 
