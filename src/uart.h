@@ -16,6 +16,6 @@ char read_char(void);
 int __io_putchar(int c);
 void USART2_IRQHandler();
 void init_uart2();
-int constraint(int var, int bottom_lim, int upper_lim);
+
 
 #endif /* UART_H_ */

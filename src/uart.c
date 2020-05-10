@@ -8,6 +8,7 @@
 #include "stm32f10x.h"
 #include "uart.h"
 #include "pwm_expander.h"
+#include "general.h"
 #include <stdio.h>
 
 void init_uart2()
@@ -123,12 +124,4 @@ void USART2_IRQHandler()
 	USART_ClearITPendingBit(USART2, USART_IT_RXNE);
 }
 
-int constraint(int var, int bottom_lim, int upper_lim)
-{
-	if(var > upper_lim)
-		return upper_lim;
-	else if(var < bottom_lim)
-		return bottom_lim;
-	else
-		return var;
-}
+

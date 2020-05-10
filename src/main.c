@@ -10,6 +10,7 @@
 
 
 #include "stm32f10x.h"
+#include "general.h"
 #include "pwm_expander.h"
 #include "uart.h"
 #include <stdio.h>
@@ -62,8 +63,6 @@ void sequence_brleg()
 
 	set_servo_angle(SERVO5_CHANNEL, 30, PCA9685_ADDR1);
 	set_servo_angle(SERVO4_CHANNEL, 108, PCA9685_ADDR1);
-
-
 }
 
 int main(void)

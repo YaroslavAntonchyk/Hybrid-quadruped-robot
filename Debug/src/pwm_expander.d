@@ -27,7 +27,8 @@ src/pwm_expander.o: ../src/pwm_expander.c \
  F:/STM_projects/Yasha/StdPeriph_Driver/inc/stm32f10x_tim.h \
  F:/STM_projects/Yasha/StdPeriph_Driver/inc/stm32f10x_usart.h \
  F:/STM_projects/Yasha/StdPeriph_Driver/inc/stm32f10x_wwdg.h \
- F:/STM_projects/Yasha/StdPeriph_Driver/inc/misc.h ../src/pwm_expander.h
+ F:/STM_projects/Yasha/StdPeriph_Driver/inc/misc.h ../src/pwm_expander.h \
+ ../src/general.h
 
 F:/STM_projects/Yasha/CMSIS/device/stm32f10x.h:
 
@@ -88,3 +89,5 @@ F:/STM_projects/Yasha/StdPeriph_Driver/inc/stm32f10x_wwdg.h:
 F:/STM_projects/Yasha/StdPeriph_Driver/inc/misc.h:
 
 ../src/pwm_expander.h:
+
+../src/general.h:

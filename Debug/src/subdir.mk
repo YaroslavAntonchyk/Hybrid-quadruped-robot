@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../src/general.c \
 ../src/main.c \
 ../src/pwm_expander.c \
 ../src/pwm_expander_working.c \
@@ -12,6 +13,7 @@ C_SRCS += \
 ../src/uart.c 
 
 OBJS += \
+./src/general.o \
 ./src/main.o \
 ./src/pwm_expander.o \
 ./src/pwm_expander_working.o \
@@ -20,6 +22,7 @@ OBJS += \
 ./src/uart.o 
 
 C_DEPS += \
+./src/general.d \
 ./src/main.d \
 ./src/pwm_expander.d \
 ./src/pwm_expander_working.d \
