@@ -14,55 +14,51 @@
 #include "pwm_expander.h"
 #include "uart.h"
 #include <stdio.h>
+int delay = 300;
 
 void sequence_frleg()
 {
-	int delay = 300;
-
-	set_servo_angle(SERVO5_CHANNEL, 30, PCA9685_ADDR1);
-	set_servo_angle(SERVO4_CHANNEL, 108, PCA9685_ADDR1);
+	set_servo_angle(4, 30);
+	set_servo_angle(3, 108);
 	delay_ms(delay);
 
-	set_servo_angle(SERVO5_CHANNEL, 11, PCA9685_ADDR1);
-	set_servo_angle(SERVO4_CHANNEL, 88, PCA9685_ADDR1);
+	set_servo_angle(4, 11);
+	set_servo_angle(3, 88);
 	delay_ms(delay);
 
-	set_servo_angle(SERVO5_CHANNEL, 0, PCA9685_ADDR1);
-	set_servo_angle(SERVO4_CHANNEL, 142, PCA9685_ADDR1);
+	set_servo_angle(4, 0);
+	set_servo_angle(3, 142);
 	delay_ms(delay);
 
-	set_servo_angle(SERVO5_CHANNEL, 45, PCA9685_ADDR1);
-	set_servo_angle(SERVO4_CHANNEL, 142, PCA9685_ADDR1);
+	set_servo_angle(4, 45);
+	set_servo_angle(3, 142);
 	delay_ms(delay);
 
-	set_servo_angle(SERVO2_CHANNEL, 30+SERVO2_OFFSET, PCA9685_ADDR1);
-	set_servo_angle(SERVO1_CHANNEL, 108+SERVO1_OFFSET, PCA9685_ADDR1);
-
-
+	set_servo_angle(1, 30+SERVO2_OFFSET);
+	set_servo_angle(0, 108+SERVO1_OFFSET);
 }
 
 void sequence_brleg()
 {
-	int delay = 300;
 
-	set_servo_angle(SERVO2_CHANNEL, 30+SERVO2_OFFSET, PCA9685_ADDR1);
-	set_servo_angle(SERVO1_CHANNEL, 108+SERVO1_OFFSET, PCA9685_ADDR1);
+	set_servo_angle(1, 30+SERVO2_OFFSET);
+	set_servo_angle(0, 108+SERVO1_OFFSET);
 	delay_ms(delay);
 
-	set_servo_angle(SERVO2_CHANNEL, 11+SERVO2_OFFSET, PCA9685_ADDR1);
-	set_servo_angle(SERVO1_CHANNEL, 88+SERVO1_OFFSET, PCA9685_ADDR1);
+	set_servo_angle(1, 11+SERVO2_OFFSET);
+	set_servo_angle(0, 88+SERVO1_OFFSET);
 	delay_ms(delay);
 
-	set_servo_angle(SERVO2_CHANNEL, 0+SERVO2_OFFSET, PCA9685_ADDR1);
-	set_servo_angle(SERVO1_CHANNEL, 142+SERVO1_OFFSET, PCA9685_ADDR1);
+	set_servo_angle(1, 0+SERVO2_OFFSET);
+	set_servo_angle(0, 142+SERVO1_OFFSET);
 	delay_ms(delay);
 
-	set_servo_angle(SERVO2_CHANNEL, 45+SERVO2_OFFSET, PCA9685_ADDR1);
-	set_servo_angle(SERVO1_CHANNEL, 142+SERVO1_OFFSET, PCA9685_ADDR1);
+	set_servo_angle(1, 45+SERVO2_OFFSET);
+	set_servo_angle(0, 142+SERVO1_OFFSET);
 	delay_ms(delay);
 
-	set_servo_angle(SERVO5_CHANNEL, 30, PCA9685_ADDR1);
-	set_servo_angle(SERVO4_CHANNEL, 108, PCA9685_ADDR1);
+	set_servo_angle(4, 30);
+	set_servo_angle(3, 108);
 }
 
 int main(void)
@@ -70,15 +66,8 @@ int main(void)
 	init_pca9685();
 	init_uart2();
 
-	servo1 = 90;
-	servo2 = 90;
-	servo3 = 90;
-	servo4 = 90;
-	servo5 = 90;
-	servo6 = 90;
-
-	set_servo_angle(SERVO3_CHANNEL, 101+SERVO3_OFFSET, PCA9685_ADDR1);
-	set_servo_angle(SERVO6_CHANNEL, 101, PCA9685_ADDR1);
+	set_servo_angle(2, 101+SERVO3_OFFSET);
+	set_servo_angle(5, 101);
 	delay_ms(500);
 
 	while(1)
@@ -98,8 +87,8 @@ int main(void)
 //		set_servo_angle(9, servo4, PCA9685_ADDR1);
 //		set_servo_angle(11, servo5, PCA9685_ADDR1);
 //		set_servo_angle(10, servo6, PCA9685_ADDR1);
-
-		delay_ms(10);
+//		set_servo_angle(channel[0], servo_angle[0]);
+//		delay_ms(10);
 
 	}
 }

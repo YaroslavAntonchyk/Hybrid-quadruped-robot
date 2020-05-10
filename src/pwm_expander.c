@@ -10,6 +10,9 @@
 #include "pwm_expander.h"
 #include "general.h"
 
+uint8_t servo_angle[12] = {90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90};
+const uint8_t channel[12] = {0, 2, 1, 9, 11, 10, 0, 0, 0, 0, 0, 0};
+
 void i2c_set_addr(uint32_t addr, uint8_t device_addr)
 {
 	I2C_GenerateSTART(I2C1, ENABLE);
@@ -45,21 +48,20 @@ void pca9685_config(uint8_t device_addr)
 	i2c_write(0, &config, sizeof(config), device_addr);
 }
 
-void set_servo_angle(uint8_t channel, uint8_t angle, uint8_t device_addr)
+void set_servo_angle(uint8_t schannel, uint8_t angle)
 {
-	uint8_t addr = 6 + 4*channel;
+	uint8_t addr = 6 + 4*channel[schannel];
 	uint16_t pwm_duty = 0;
 	uint8_t time_off[4] = {0, 0, 0, 0};
 	constraint(angle, 0, 180);
 	pwm_duty = 110 + 2.116*angle;
 	time_off[2] = (unsigned)pwm_duty & 0xff;
 	time_off[3] = (unsigned)pwm_duty >> 8;
-	i2c_write(addr, time_off, 4, device_addr);
+	if((schannel >= 0) && (schannel < 6))
+		i2c_write(addr, time_off, 4, PCA9685_ADDR1);
+	else if((schannel >= 6) && (schannel < 12))
+		i2c_write(addr, time_off, 4, PCA9685_ADDR2);
 }
-
-
-
-
 
 void init_pca9685()
 {

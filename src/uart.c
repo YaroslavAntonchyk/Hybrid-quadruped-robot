@@ -72,48 +72,19 @@ int __io_putchar(int c)
 void USART2_IRQHandler()
 {
 	incoming_byte = read_char();
+
 	if ((incoming_byte >= 48) && (incoming_byte <= 57))
 	{
 		incoming_byte -= 48;
 		buff = buff*10 + incoming_byte;
 	}
-	else if (incoming_byte == SERVO1_TERM)
+	else if ((incoming_byte >= 97) && (incoming_byte <= 108))
 	{
-		servo1 = constraint(buff, 0, 180);
-		printf("Servo1: %d\n", servo1);
+		servo_angle[incoming_byte-97] = constraint(buff, 0, 180);
+		printf("Servo%d - %d\n", incoming_byte-97, buff);
 		buff = 0;
 	}
-	else if (incoming_byte == SERVO2_TERM)
-	{
-		servo2 = constraint(buff, 0, 180);
-		printf("Servo2: %d\n", servo2);
-		buff = 0;
-	}
-	else if (incoming_byte == SERVO3_TERM)
-	{
-		servo3 = constraint(buff, 0, 180);
-		printf("Servo3: %d\n", servo3);
-		buff = 0;
-	}
-	else if (incoming_byte == SERVO4_TERM)
-	{
-		servo4 = constraint(buff, 0, 180);
-		printf("Servo4: %d\n", servo4);
-		buff = 0;
-	}
-	else if (incoming_byte == SERVO5_TERM)
-	{
-		servo5 = constraint(buff, 0, 180);
-		printf("Servo5: %d\n", servo5);
-		buff = 0;
-	}
-	else if (incoming_byte == SERVO6_TERM)
-	{
-		servo6 = constraint(buff, 0, 180);
-		printf("Servo6: %d\n", servo6);
-		buff = 0;
-	}
-	else if (incoming_byte == 'g')
+	else if (incoming_byte == 'm')
 	{
 		flag = 1;
 		printf("Sequence\n");

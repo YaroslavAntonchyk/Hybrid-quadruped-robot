@@ -9,6 +9,7 @@
 #define UART_H_
 
 volatile uint8_t incoming_byte;
+volatile uint8_t flag;
 volatile uint16_t buff;
 
 void send_char(char c);
