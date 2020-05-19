@@ -27,7 +27,7 @@ src/main.o: ../src/main.c F:/STM_projects/Yasha/CMSIS/device/stm32f10x.h \
  F:/STM_projects/Yasha/StdPeriph_Driver/inc/stm32f10x_usart.h \
  F:/STM_projects/Yasha/StdPeriph_Driver/inc/stm32f10x_wwdg.h \
  F:/STM_projects/Yasha/StdPeriph_Driver/inc/misc.h ../src/general.h \
- ../src/pwm_expander.h ../src/uart.h
+ ../src/pwm_expander.h ../src/uart.h ../src/h_bridge.h
 
 F:/STM_projects/Yasha/CMSIS/device/stm32f10x.h:
 
@@ -92,3 +92,5 @@ F:/STM_projects/Yasha/StdPeriph_Driver/inc/misc.h:
 ../src/pwm_expander.h:
 
 ../src/uart.h:
+
+../src/h_bridge.h:

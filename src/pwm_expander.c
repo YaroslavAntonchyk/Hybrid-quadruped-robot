@@ -10,8 +10,8 @@
 #include "pwm_expander.h"
 #include "general.h"
 
-uint8_t servo_angle[12] = {90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90};
-const uint8_t channel[12] = {0, 2, 1, 9, 11, 10, 0, 0, 0, 0, 0, 0};
+uint8_t servo_angle[12] = {119, 48, 144, 108, 30, 101, 50, 40, 70, 70, 140, 30};
+const uint8_t channel[12] = {0, 2, 1, 9, 11, 10, 14, 15, 13, 6, 5, 7};
 
 void i2c_set_addr(uint32_t addr, uint8_t device_addr)
 {
@@ -88,5 +88,5 @@ void init_pca9685()
 	SysTick_Config(SystemCoreClock/1000);
 
 	pca9685_config(PCA9685_ADDR1);
-	// pca9685_config(PCA9685_ADDR2);
+	pca9685_config(PCA9685_ADDR2);
 }

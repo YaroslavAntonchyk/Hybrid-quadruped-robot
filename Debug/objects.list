@@ -23,6 +23,7 @@
 "StdPeriph_Driver/src/stm32f10x_wwdg.o"
 "Utilities/STM32F1xx-Nucleo/stm32f1xx_nucleo.o"
 "src/general.o"
+"src/h_bridge.o"
 "src/main.o"
 "src/pwm_expander.o"
 "src/pwm_expander_working.o"

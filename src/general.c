@@ -29,6 +29,6 @@ void SysTick_Handler()
 void delay_ms(int time)
 {
 	timer_ms = time;
-	while(timer_ms > 0){};
+	while(timer_ms > 0);
 }
 
