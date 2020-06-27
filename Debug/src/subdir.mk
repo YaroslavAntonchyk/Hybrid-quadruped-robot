@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../src/ADC.c \
 ../src/general.c \
 ../src/h_bridge.c \
 ../src/main.c \
@@ -14,6 +15,7 @@ C_SRCS += \
 ../src/uart.c 
 
 OBJS += \
+./src/ADC.o \
 ./src/general.o \
 ./src/h_bridge.o \
 ./src/main.o \
@@ -24,6 +26,7 @@ OBJS += \
 ./src/uart.o 
 
 C_DEPS += \
+./src/ADC.d \
 ./src/general.d \
 ./src/h_bridge.d \
 ./src/main.d \

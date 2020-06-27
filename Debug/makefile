@@ -35,7 +35,7 @@ all: Yasha.elf
 Yasha.elf: $(OBJS) $(USER_OBJS) F:\STM_projects\Yasha/LinkerScript.ld
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU GCC Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -T"F:/STM_projects/Yasha/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "Yasha.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
+	arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -u _printf_float -T"F:/STM_projects/Yasha/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "Yasha.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build

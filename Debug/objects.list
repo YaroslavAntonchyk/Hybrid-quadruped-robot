@@ -22,6 +22,7 @@
 "StdPeriph_Driver/src/stm32f10x_usart.o"
 "StdPeriph_Driver/src/stm32f10x_wwdg.o"
 "Utilities/STM32F1xx-Nucleo/stm32f1xx_nucleo.o"
+"src/ADC.o"
 "src/general.o"
 "src/h_bridge.o"
 "src/main.o"

@@ -63,6 +63,20 @@ void set_servo_angle(uint8_t schannel, uint8_t angle)
 		i2c_write(addr, time_off, 4, PCA9685_ADDR2);
 }
 
+void wheel_brake(uint8_t channel, uint8_t angle, uint8_t device_addr)
+{
+	uint8_t addr = 6 + 4*channel;
+	uint16_t pwm_duty = 0;
+	uint8_t time_off[4] = {0, 0, 0, 0};
+	if(angle > 180) angle = 180;
+	else if(angle < 0) angle = 0;
+	pwm_duty = 110 + 2.116*angle;
+	time_off[2] = (unsigned)pwm_duty & 0xff;
+	time_off[3] = (unsigned)pwm_duty >> 8;
+	i2c_write(addr, time_off, 4, device_addr);
+}
+
+
 void init_pca9685()
 {
 	GPIO_InitTypeDef gpio;
