@@ -214,6 +214,23 @@ void walking()
 	flag = 0;
 }
 
+void set_servo_rolling()
+{
+	set_servo_angle(0, 60);
+	set_servo_angle(1, 15);
+	set_servo_angle(2, 130);
+	set_servo_angle(3, 70);
+	set_servo_angle(4, 0);
+	set_servo_angle(5, 101);
+	set_servo_angle(6, 91);
+	set_servo_angle(7, 140);
+	set_servo_angle(8, 66);
+	set_servo_angle(9, 135);
+	set_servo_angle(10, 153);
+	set_servo_angle(11, 27);
+}
+
+
 int main(void)
 {
 	init_pca9685();
@@ -224,40 +241,18 @@ int main(void)
 	init_encoder();
 
 	iteration_time = 1000;
-	servo_angle[0] = 50;
-	servo_angle[1] = 50;
-	servo_angle[2] = 50;
-	servo_angle[3] = 50;
+//	servo_angle[0] = 50;
+//	servo_angle[1] = 50;
+//	servo_angle[2] = 50;
+//	servo_angle[3] = 50;
 	TIM1->CNT = 32768;
 	TIM2->CNT = 32768;
-	pos1 = 32768;
-	pos4 = 32768;
+	pos1_cnt = 32768;
+	pos4_cnt = 32768;
 	while(1)
 	{
-//		printf("pos1 %d, pos2 %d, pos3 %d, pos4 %d\n", pos1_cnt, TIM1->CNT, TIM2->CNT, pos4_cnt);
-		pos2 = TIM1->CNT;
-		pos3 = TIM2->CNT;
-		pos1 = pos1_cnt;
-		pos4 = pos4_cnt;
-
-//		speed_control(servo_angle[0]-50, pos1-32768, 1); //left forward
-//		speed_control(servo_angle[1]-50, pos2-32768, 2); //left back
-//		speed_control(servo_angle[2]-50, pos3-32768, 3); //right forward
-		speed_control(servo_angle[3]-50, pos4-32768, 4); //right back
-
-		TIM1->CNT = 32768;
-		TIM2->CNT = 32768;
-		pos1_cnt = 32768;
-		pos4_cnt = 32768;
-
-//		TIM_SetCompare1(TIM3, constraint(servo_angle[0]*10, 0, 1000));
-//		TIM_SetCompare2(TIM3, constraint(servo_angle[1]*10, 0, 1000));
-//		TIM_SetCompare3(TIM3, constraint(servo_angle[2]*10, 0, 1000));
-//		TIM_SetCompare4(TIM3, constraint(servo_angle[3]*10, 0, 1000));
-//		wheel_brake(2, servo_angle[0], PCA9685_ADDR2);
-//		wheel_brake(12, servo_angle[1], PCA9685_ADDR1);
-//		wheel_brake(13, servo_angle[2], PCA9685_ADDR1);
-
+		set_servo_rolling();
+		wheel_robot_control();
 //		walking();
 //		set_servo_angle(0, servo_angle[0]);
 //		set_servo_angle(1, servo_angle[1]);
@@ -278,6 +273,32 @@ int main(void)
 
 }
 
+void wheel_robot_control()
+{
+//	printf("pos1 %d, pos2 %d, pos3 %d, pos4 %d\n", pos1_cnt, TIM1->CNT, TIM2->CNT, pos4_cnt);
+	pos2 = TIM1->CNT - 32768;
+	pos3 = TIM2->CNT - 32768;
+	pos1 = pos1_cnt - 32768;
+	pos4 = pos4_cnt - 32768;
+
+	TIM1->CNT = 32768;
+	TIM2->CNT = 32768;
+	pos1_cnt = 32768;
+	pos4_cnt = 32768;
+
+	lin_vel = servo_angle[0] - 50;
+	ang_vel = servo_angle[1] - 50;
+	v1 = (2*lin_vel + ang_vel*L)/(2*R);
+	v2 = v1;
+	v3 = (2*lin_vel - ang_vel*L)/(2*R);
+	v4 = v3;
+	printf("left_vel %d, right_vel %d\n", v1, v3);
+	speed_control(v1, pos1, 1); //left forward
+	speed_control(v2, pos2, 2); //left back
+	speed_control(v3, pos3, 3); //right forward
+	speed_control(v4, pos4, 4); //right back
+}
+
 void speed_control(int desire_speed, int actual_speed, uint8_t wheel)
 {
 	switch(wheel)
@@ -291,13 +312,13 @@ void speed_control(int desire_speed, int actual_speed, uint8_t wheel)
 			{
 				GPIO_SetBits(GPIOA, GPIO_Pin_12);
 				GPIO_ResetBits(GPIOA, GPIO_Pin_11);
-				printf("forward ");
+				//printf("forward ");
 			}
 			else if (desire_speed < 0)
 			{
 				GPIO_SetBits(GPIOA, GPIO_Pin_11);
 				GPIO_ResetBits(GPIOA, GPIO_Pin_12);
-				printf("backward ");
+				//printf("backward ");
 			}
 			else
 				output = 0;
@@ -305,7 +326,7 @@ void speed_control(int desire_speed, int actual_speed, uint8_t wheel)
 			TIM_SetCompare2(TIM3, constraint(output, 0, 1000));
 			error_prior1 = error;
 			integral_prior1 = integral;
-			printf("output %d, speed %d, goal %d\n", output, actual_speed, desire_speed);
+			//printf("output %d, speed %d, goal %d\n", output, actual_speed, desire_speed);
 			break;
 
 		case 2:
@@ -317,21 +338,21 @@ void speed_control(int desire_speed, int actual_speed, uint8_t wheel)
 				GPIO_SetBits(GPIOC, GPIO_Pin_6);
 				GPIO_ResetBits(GPIOC, GPIO_Pin_8);
 				output = Kp*error + Ki*integral - Kd*derivative + 200;
-				printf("forward ");
+				//printf("forward ");
 			}
 			else if (desire_speed < 0)
 			{
 				GPIO_SetBits(GPIOC, GPIO_Pin_8);
 				GPIO_ResetBits(GPIOC, GPIO_Pin_6);
 				output = -Kp*error + Ki*integral - Kd*derivative + 200;
-				printf("backward ");
+				//printf("backward ");
 			}
 			else
 				output = 0;
 			TIM_SetCompare1(TIM3, constraint(output, 0, 1000));
 			error_prior2 = error;
 			integral_prior2 = integral;
-			printf("output %d, speed %d, goal %d\n", output, actual_speed, desire_speed);
+			//printf("output %d, speed %d, goal %d\n", output, actual_speed, desire_speed);
 			break;
 
 		case 3:
@@ -343,21 +364,21 @@ void speed_control(int desire_speed, int actual_speed, uint8_t wheel)
 				GPIO_SetBits(GPIOB, GPIO_Pin_15);
 				GPIO_ResetBits(GPIOB, GPIO_Pin_14);
 				output = Kp*error + Ki*integral - Kd*derivative + 200;
-				printf("forward ");
+				//printf("forward ");
 			}
 			else if (desire_speed < 0)
 			{
 				GPIO_SetBits(GPIOB, GPIO_Pin_14);
 				GPIO_ResetBits(GPIOB, GPIO_Pin_15);
 				output = -Kp*error + Ki*integral - Kd*derivative + 200;
-				printf("backward ");
+				//printf("backward ");
 			}
 			else
 				output = 0;
 			TIM_SetCompare4(TIM3, constraint(output, 0, 1000));
 			error_prior3 = error;
 			integral_prior3 = integral;
-			printf("output %d, speed %d, goal %d\n", output, actual_speed, desire_speed);
+			//printf("output %d, speed %d, goal %d\n", output, actual_speed, desire_speed);
 			break;
 
 		case 4:
@@ -369,13 +390,13 @@ void speed_control(int desire_speed, int actual_speed, uint8_t wheel)
 			{
 				GPIO_SetBits(GPIOC, GPIO_Pin_3);
 				GPIO_ResetBits(GPIOC, GPIO_Pin_2);
-				printf("forward ");
+				//printf("forward ");
 			}
 			else if (desire_speed < 0)
 			{
 				GPIO_SetBits(GPIOC, GPIO_Pin_2);
 				GPIO_ResetBits(GPIOC, GPIO_Pin_3);
-				printf("backward ");
+				//printf("backward ");
 			}
 			else
 				output = 0;
@@ -383,7 +404,7 @@ void speed_control(int desire_speed, int actual_speed, uint8_t wheel)
 			TIM_SetCompare3(TIM3, constraint(output, 0, 1000));
 			error_prior4 = error;
 			integral_prior4 = integral;
-			printf("output %d, speed %d, goal %d\n", output, actual_speed, desire_speed);
+			//printf("output %d, speed %d, goal %d\n", output, actual_speed, desire_speed);
 			break;
 
 		default:
