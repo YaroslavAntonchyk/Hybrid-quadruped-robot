@@ -253,7 +253,9 @@ int main(void)
 	TIM2->CNT = 32768;
 	pos1_cnt = 32768;
 	pos4_cnt = 32768;
-
+	int move_left = 20;
+	int move_right = 10;
+	int low_height = 180;
 	while(1)
 	{
 
@@ -264,10 +266,10 @@ int main(void)
 			inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 1);
 			delay_ms(100);
 		}
-		inverse_kin(sequence[0][4], sequence[1][4], sequence[2][4], 1);
-		inverse_kin(sequence[0][0], sequence[1][0], sequence[2][0], 2);
-		inverse_kin(sequence[0][6], sequence[1][6], sequence[2][6], 3);
-		inverse_kin(sequence[0][5], sequence[1][5], sequence[2][5], 4);
+		inverse_kin(sequence[0][4], 0, low_height, 1);
+		inverse_kin(sequence[0][0], move_left, sequence[2][0], 2);
+		inverse_kin(sequence[0][6], move_left, sequence[2][6], 3);
+		inverse_kin(sequence[0][5], 0, sequence[2][5], 4);
 		flag = 0;
 		delay_ms(100);
 
@@ -278,10 +280,10 @@ int main(void)
 			inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 2);
 			delay_ms(100);
 		}
-		inverse_kin(sequence[0][5], sequence[1][5], sequence[2][5], 1);
-		inverse_kin(sequence[0][4], sequence[1][4], sequence[2][4], 2);
-		inverse_kin(sequence[0][0], sequence[1][0], sequence[2][0], 3);
-		inverse_kin(sequence[0][6], sequence[1][6], sequence[2][6], 4);
+		inverse_kin(sequence[0][5], 0, sequence[2][5]+10, 1);
+		inverse_kin(sequence[0][4], move_left, sequence[2][4]+10, 2);
+		inverse_kin(sequence[0][0], move_left, sequence[2][0], 3);
+		inverse_kin(sequence[0][6], 0, low_height, 4);
 		flag = 0;
 		delay_ms(100);
 
@@ -292,10 +294,10 @@ int main(void)
 			inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 3);
 			delay_ms(100);
 		}
-		inverse_kin(sequence[0][6], sequence[1][6], sequence[2][6], 1);
-		inverse_kin(sequence[0][5], sequence[1][5], sequence[2][5], 2);
-		inverse_kin(sequence[0][4], sequence[1][4], sequence[2][4], 3);
-		inverse_kin(sequence[0][0], sequence[1][0], sequence[2][0], 4);
+		inverse_kin(sequence[0][6], 0, sequence[2][6]+10, 1);
+		inverse_kin(sequence[0][5], move_left, sequence[2][5]+10, 2);
+		inverse_kin(sequence[0][4], move_left, 170, 3);
+		inverse_kin(sequence[0][0], 0, sequence[2][0], 4);
 		flag = 0;
 		delay_ms(100);
 
@@ -306,10 +308,10 @@ int main(void)
 			inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 4);
 			delay_ms(100);
 		}
-		inverse_kin(sequence[0][0], sequence[1][0], sequence[2][0], 1);
-		inverse_kin(sequence[0][6], sequence[1][6], sequence[2][6], 2);
-		inverse_kin(sequence[0][5], sequence[1][5], sequence[2][5], 3);
-		inverse_kin(sequence[0][4], sequence[1][4], sequence[2][4], 4);
+		inverse_kin(sequence[0][0], 0, sequence[2][0], 1);
+		inverse_kin(sequence[0][6], move_left, low_height, 2);
+		inverse_kin(sequence[0][5], move_left, sequence[2][5], 3);
+		inverse_kin(sequence[0][4], 0, sequence[2][4], 4);
 		flag = 0;
 		delay_ms(100);
 
