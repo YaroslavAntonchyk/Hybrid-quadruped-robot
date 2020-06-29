@@ -24,7 +24,11 @@ int delay = 150;
 
 int servo_ang[12] = {148, 131, 130,	139, 113, 100, 23, 12, 66, 46, 40, 27};
 int ang[12] = {0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0};
-
+int sequence[3][7] = {
+		{-60, -50, -10, 0, -15, -30, -45},
+		{0, 0, 0, 0, 0, 0, 0},
+		{180, 140, 140, 180, 180, 180, 180,}
+};
 
 void step1()
 {
@@ -245,21 +249,70 @@ int main(void)
 	init_hardware_timer_version();
 	init_encoder();
 
-	servo_angle[0] = 50;
-	servo_angle[1] = 50;
-	servo_angle[2] = 0;
-//	servo_angle[3] = 50;
 	TIM1->CNT = 32768;
 	TIM2->CNT = 32768;
 	pos1_cnt = 32768;
 	pos4_cnt = 32768;
 
-	set_servo_angle(6, 20);
-	set_servo_angle(7, 12);
-	set_servo_angle(8, 66);
 	while(1)
 	{
-		inverse_kin();
+
+		while(!flag);
+		printf("1\n");
+		for(int i = 0; i < 4; i++)
+		{
+			inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 1);
+			delay_ms(100);
+		}
+		inverse_kin(sequence[0][4], sequence[1][4], sequence[2][4], 1);
+		inverse_kin(sequence[0][0], sequence[1][0], sequence[2][0], 2);
+		inverse_kin(sequence[0][6], sequence[1][6], sequence[2][6], 3);
+		inverse_kin(sequence[0][5], sequence[1][5], sequence[2][5], 4);
+		flag = 0;
+		delay_ms(100);
+
+		while(!flag);
+		printf("2\n");
+		for(int i = 0; i < 4; i++)
+		{
+			inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 2);
+			delay_ms(100);
+		}
+		inverse_kin(sequence[0][5], sequence[1][5], sequence[2][5], 1);
+		inverse_kin(sequence[0][4], sequence[1][4], sequence[2][4], 2);
+		inverse_kin(sequence[0][0], sequence[1][0], sequence[2][0], 3);
+		inverse_kin(sequence[0][6], sequence[1][6], sequence[2][6], 4);
+		flag = 0;
+		delay_ms(100);
+
+		while(!flag);
+		printf("3\n");
+		for(int i = 0; i < 4; i++)
+		{
+			inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 3);
+			delay_ms(100);
+		}
+		inverse_kin(sequence[0][6], sequence[1][6], sequence[2][6], 1);
+		inverse_kin(sequence[0][5], sequence[1][5], sequence[2][5], 2);
+		inverse_kin(sequence[0][4], sequence[1][4], sequence[2][4], 3);
+		inverse_kin(sequence[0][0], sequence[1][0], sequence[2][0], 4);
+		flag = 0;
+		delay_ms(100);
+
+		while(!flag);
+		printf("4\n");
+		for(int i = 0; i < 4; i++)
+		{
+			inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 4);
+			delay_ms(100);
+		}
+		inverse_kin(sequence[0][0], sequence[1][0], sequence[2][0], 1);
+		inverse_kin(sequence[0][6], sequence[1][6], sequence[2][6], 2);
+		inverse_kin(sequence[0][5], sequence[1][5], sequence[2][5], 3);
+		inverse_kin(sequence[0][4], sequence[1][4], sequence[2][4], 4);
+		flag = 0;
+		delay_ms(100);
+
 //		set_servo_rolling();
 //		wheel_robot_control();
 
@@ -283,11 +336,11 @@ int main(void)
 
 }
 
-void inverse_kin()
+void inverse_kin(int x, int y, int z, uint8_t leg)
 {
-	x = constraint(servo_angle[0]-70, -70, 50);
-	y = constraint(servo_angle[1]-50, -50, 50);
-	z = constraint(servo_angle[2]+100, 130, 235);
+	x = constraint(x, -70, 50);
+	y = constraint(y, -50, 50);
+	z = constraint(z, 130, 235);
 
 	z1 = z;
 	theta1 = atan2(y, z1);
@@ -301,36 +354,53 @@ void inverse_kin()
 	theta2 = theta2 * (180/pi);
 	theta3 = (pi - theta3) * (180/pi);
 	printf("a %d, b %d, c %d\n", (int)theta2, (int)theta3, (int)theta1);
-	// left back leg
-	servo_ang[6] = 23 + 0.858974359*theta2;
-	servo_ang[7] = 12 + 1.037037037*theta3; // 180-servo_angle[1]
-	servo_ang[8] = 66 + 1.02962963*theta1; // servo_angle[2] +-
-	set_servo_angle(6, (uint8_t)constraint(servo_ang[6], 5, 100));
-	set_servo_angle(7, (uint8_t)constraint(servo_ang[7], 0, 120));
-	set_servo_angle(8, (uint8_t)constraint(servo_ang[8], 46, 86));
-	// left forward leg
-	servo_ang[9] = 47 + 1.115384615*theta2;
-	servo_ang[10] = 40 + 0.914814815*theta3; // 180-servo_angle[1]
-	servo_ang[11] = 27 + 1.049074074*theta1; // servo_angle[2] +-
-	set_servo_angle(9, (uint8_t)constraint(servo_ang[9], 23, 147));
-	set_servo_angle(10, (uint8_t)constraint(servo_ang[10], 30, 136));
-	set_servo_angle(11, (uint8_t)constraint(servo_ang[11], 7, 47));
 
-	// right back leg
-	servo_ang[0] = 148 - 1.115384615*theta2;
-	servo_ang[1] = 131 - 0.940740741*theta3; // 180-servo_angle[1]
-	servo_ang[2] = 130 + 1.074074074*theta1; // servo_angle[2] +-
-	set_servo_angle(0, (uint8_t)constraint(servo_ang[0], 60, 165));
-	set_servo_angle(1, (uint8_t)constraint(servo_ang[1], 33, 142));
-	set_servo_angle(2, (uint8_t)constraint(servo_ang[2], 110, 150));
+	switch(leg)
+	{
+		case 1:
+			// right forward leg
+			servo_ang[3] = 140 - 0.884615385*theta2;
+			servo_ang[4] = 113 - 0.918518519*theta3;
+			servo_ang[5] = 101 + 0.959259259*theta1; // servo_angle[2] +-
+			set_servo_angle(3, (uint8_t)constraint(servo_ang[3], 70, 150));
+			set_servo_angle(4, (uint8_t)constraint(servo_ang[4], 17, 124));
+			set_servo_angle(5, (uint8_t)constraint(servo_ang[5], 81, 121));
+			break;
 
-	// right forward leg
-	servo_ang[3] = 140 - 0.884615385*theta2;
-	servo_ang[4] = 113 - 0.918518519*theta3; // 180-servo_angle[1]
-	servo_ang[5] = 101 + 0.959259259*theta1; // servo_angle[2] +-
-	set_servo_angle(3, (uint8_t)constraint(servo_ang[3], 70, 150));
-	set_servo_angle(4, (uint8_t)constraint(servo_ang[4], 17, 124));
-	set_servo_angle(5, (uint8_t)constraint(servo_ang[5], 81, 121));
+		case 2:
+			// left back leg
+			servo_ang[6] = 23 + 0.858974359*theta2;
+			servo_ang[7] = 12 + 1.037037037*theta3;
+			servo_ang[8] = 66 + 1.02962963*theta1; // servo_angle[2] +-
+			set_servo_angle(6, (uint8_t)constraint(servo_ang[6], 5, 100));
+			set_servo_angle(7, (uint8_t)constraint(servo_ang[7], 0, 120));
+			set_servo_angle(8, (uint8_t)constraint(servo_ang[8], 46, 86));
+			break;
+
+		case 3:
+			// left forward leg
+			servo_ang[9] = 47 + 1.115384615*theta2;
+			servo_ang[10] = 40 + 0.914814815*theta3;
+			servo_ang[11] = 27 + 1.049074074*theta1; // servo_angle[2] +-
+			set_servo_angle(9, (uint8_t)constraint(servo_ang[9], 23, 147));
+			set_servo_angle(10, (uint8_t)constraint(servo_ang[10], 30, 136));
+			set_servo_angle(11, (uint8_t)constraint(servo_ang[11], 7, 47));
+			break;
+		case 4:
+			// right back leg
+			servo_ang[0] = 148 - 1.115384615*theta2;
+			servo_ang[1] = 113 - 0.966666667*theta3;
+			servo_ang[2] = 130 + 1.074074074*theta1; // servo_angle[2] +-
+			set_servo_angle(0, (uint8_t)constraint(servo_ang[0], 60, 165));
+			set_servo_angle(1, (uint8_t)constraint(servo_ang[1], 0, 124));
+			set_servo_angle(2, (uint8_t)constraint(servo_ang[2], 110, 150));
+			break;
+
+		default:
+			break;
+	}
+
+
 }
 
 void wheel_robot_control()

@@ -38,6 +38,6 @@ float theta1, theta2, theta3, theta22;
 
 void speed_control(int desire_speed, int actual_speed, uint8_t wheel);
 void wheel_robot_control();
-void inverse_kin();
+void inverse_kin(int x, int y, int z, uint8_t leg);
 
 #endif /* MAIN_H_ */
