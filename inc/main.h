@@ -36,8 +36,12 @@ int servo_ang[12];
 float x, y, z, z1, z2, z3;
 float theta1, theta2, theta3, theta22;
 
+void servo_test();
 void speed_control(int desire_speed, int actual_speed, uint8_t wheel);
 void wheel_robot_control();
+void set_servo_rolling();
 void inverse_kin(int x, int y, int z, uint8_t leg);
+void walk_straightforward();
+void side_walk();
 
 #endif /* MAIN_H_ */

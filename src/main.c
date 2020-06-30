@@ -20,224 +20,82 @@
 #include "h_bridge.h"
 #include "ADC.h"
 
-int delay = 150;
-
 int servo_ang[12] = {148, 131, 130,	139, 113, 100, 23, 12, 66, 46, 40, 27};
-int ang[12] = {0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0};
+int ang[12] = {0, 0, 0,	0, 0, 0, 0,	0, 0, 0, 0,	0};
 int sequence[3][7] = {
 		{-60, -50, -10, 0, -15, -30, -45},
 		{0, 0, 0, 0, 0, 0, 0},
 		{180, 140, 140, 180, 180, 180, 180,}
 };
+int sequence_side[3][7] = {
+		{-30, -30, -30, -30, -30, -30, -30},
+		{-30, -20, 20, 30, 15, 0, -15},
+		{180, 140, 140, 180, 180, 180, 180,}
+};
+int sequence_reverse[3][7] = {
+		{0, -10, -50, -60, -45, -30, -15},
+		{0, 0, 0, 0, 0, 0, 0},
+		{180, 140, 140, 180, 180, 180, 180,}
+};
 
-void step1()
-{
-	set_servo_angle(8, 57);
-	set_servo_angle(11, 18);
-	set_servo_angle(2, 129);
-	set_servo_angle(5, 91);
-	delay_ms(delay);
-
-	set_servo_angle(0, 61);
-	set_servo_angle(1, 51);
-	set_servo_angle(2, 139);
-	delay_ms(delay);
-	set_servo_angle(0, 52);
-	set_servo_angle(1, 17);
-	set_servo_angle(2, 139);
-	delay_ms(delay);
-	set_servo_angle(0, 101);
-	set_servo_angle(1, 17);
-	set_servo_angle(2, 139);
-	delay_ms(delay);
-	set_servo_angle(0, 101);
-	set_servo_angle(1, 50);
-	set_servo_angle(2, 139);
-	delay_ms(delay);
-
-	// move body
-	set_servo_angle(0, 90);
-	set_servo_angle(1, 41);
-	set_servo_angle(2, 139);
-
-	set_servo_angle(3, 105);
-	set_servo_angle(4, 19);
-	set_servo_angle(5, 101);
-
-	set_servo_angle(6, 84);
-	set_servo_angle(7, 104);
-	set_servo_angle(8, 66);
-
-	set_servo_angle(9, 111);
-	set_servo_angle(10, 134);
-	set_servo_angle(11, 27);
-	delay_ms(delay);
-}
-
-void step2()
-{
-	set_servo_angle(2, 149);
-	set_servo_angle(5, 109);
-	set_servo_angle(8, 76);
-	set_servo_angle(11, 37);
-	delay_ms(delay);
-
-	set_servo_angle(9, 111);
-	set_servo_angle(10, 134);
-	set_servo_angle(11, 27);
-	delay_ms(delay);
-	set_servo_angle(9, 112);
-	set_servo_angle(10, 152);
-	set_servo_angle(11, 27);
-	delay_ms(delay);
-	set_servo_angle(9, 62);
-	set_servo_angle(10, 152);
-	set_servo_angle(11, 27);
-	delay_ms(delay);
-	set_servo_angle(9, 62);
-	set_servo_angle(10, 123);
-	set_servo_angle(11, 27);
-	delay_ms(delay);
-
-	// move body
-	set_servo_angle(9, 75);
-	set_servo_angle(10, 128);
-	set_servo_angle(11, 27);
-
-	set_servo_angle(0, 78);
-	set_servo_angle(1, 42);
-	set_servo_angle(2, 139);
-
-	set_servo_angle(6, 90);
-	set_servo_angle(7, 100);
-	set_servo_angle(8, 66);
-
-	set_servo_angle(3, 97);
-	set_servo_angle(4, 18);
-	set_servo_angle(5, 101);
-	delay_ms(delay);
-}
-
-void step3()
-{
-	set_servo_angle(2, 149);
-	set_servo_angle(5, 109);
-	set_servo_angle(8, 76);
-	set_servo_angle(11, 37);
-	delay_ms(delay);
-
-	set_servo_angle(6, 90);
-	set_servo_angle(7, 100);
-	set_servo_angle(8, 66);
-	delay_ms(delay);
-	set_servo_angle(6, 97);
-	set_servo_angle(7, 138);
-	set_servo_angle(8, 66);
-	delay_ms(delay);
-	set_servo_angle(6, 59);
-	set_servo_angle(7, 138);
-	set_servo_angle(8, 66);
-	delay_ms(delay);
-	set_servo_angle(6, 59);
-	set_servo_angle(7, 102);
-	set_servo_angle(8, 66);
-	delay_ms(delay);
-
-	// move body
-	set_servo_angle(6, 68);
-	set_servo_angle(7, 111);
-	set_servo_angle(8, 66);
-
-	set_servo_angle(9, 90);
-	set_servo_angle(10, 134);
-	set_servo_angle(11, 27);
-
-	set_servo_angle(0, 69);
-	set_servo_angle(1, 48);
-	set_servo_angle(2, 139);
-
-	set_servo_angle(3, 89);
-	set_servo_angle(4, 19);
-	set_servo_angle(5, 101);
-	delay_ms(delay);
-}
-
-void step4()
-{
-	set_servo_angle(8, 57);
-	set_servo_angle(11, 18);
-	set_servo_angle(2, 129);
-	set_servo_angle(5, 91);
-	delay_ms(delay);
-
-	set_servo_angle(3, 89);
-	set_servo_angle(4, 19);
-	set_servo_angle(5, 101);
-	delay_ms(delay);
-	set_servo_angle(3, 88);
-	set_servo_angle(4, 1);
-	set_servo_angle(5, 101);
-	delay_ms(delay);
-	set_servo_angle(3, 127);
-	set_servo_angle(4, 1);
-	set_servo_angle(5, 101);
-	delay_ms(delay);
-	set_servo_angle(3, 127);
-	set_servo_angle(4, 30);
-	set_servo_angle(5, 101);
-	delay_ms(delay);
-
-	// move body
-	set_servo_angle(3, 117);
-	set_servo_angle(4, 25);
-	set_servo_angle(5, 101);
-
-	set_servo_angle(6, 77);
-	set_servo_angle(7, 110);
-	set_servo_angle(8, 66);
-
-	set_servo_angle(9, 101);
-	set_servo_angle(10, 135);
-	set_servo_angle(11, 27);
-
-	set_servo_angle(0, 61);
-	set_servo_angle(1, 51);
-	set_servo_angle(2, 139);
-	delay_ms(delay);
-
-}
-
-void walking()
-{
-	while(!flag);
-	step1();
-	flag = 0;
-	while(!flag);
-	step2();
-	flag = 0;
-	while(!flag);
-	step3();
-	flag = 0;
-	while(!flag);
-	step4();
-	flag = 0;
-}
-
-void set_servo_rolling()
-{
-	set_servo_angle(0, 60);
-	set_servo_angle(1, 15);
-	set_servo_angle(2, 130);
-	set_servo_angle(3, 70);
-	set_servo_angle(4, 0);
-	set_servo_angle(5, 101);
-	set_servo_angle(6, 91);
-	set_servo_angle(7, 140);
-	set_servo_angle(8, 66);
-	set_servo_angle(9, 135);
-	set_servo_angle(10, 153);
-	set_servo_angle(11, 27);
-}
+//void spot_rotation() //TODO change sequences
+//{
+//	while(!flag);
+//	printf("1\n");
+//	for(int i = 0; i < 4; i++)
+//	{
+//		inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 1);
+//		delay_ms(100);
+//	}
+//	inverse_kin(sequence[0][4], 0, sequence[2][4], 1);
+//	inverse_kin(sequence[0][0], 20, sequence[2][0], 2);
+//	inverse_kin(sequence[0][6], 20, sequence[2][6], 3);
+//	inverse_kin(sequence[0][5], 0, sequence[2][5], 4);
+//	flag = 0;
+//	delay_ms(100);
+//
+//	while(!flag);
+//	printf("2\n");
+//	for(int i = 0; i < 4; i++)
+//	{
+//		inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 2);
+//		delay_ms(100);
+//	}
+//	inverse_kin(sequence[0][5], 0, sequence[2][5]+10, 1);
+//	inverse_kin(sequence[0][4], 20, sequence[2][4]+10, 2);
+//	inverse_kin(sequence[0][0], 20, sequence[2][0], 3);
+//	inverse_kin(sequence[0][6], 0, sequence[2][6], 4);
+//	flag = 0;
+//	delay_ms(100);
+//
+//	while(!flag);
+//	printf("3\n");
+//	for(int i = 0; i < 4; i++)
+//	{
+//		inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 3);
+//		delay_ms(100);
+//	}
+//	inverse_kin(sequence[0][6], 0, sequence[2][6]+10, 1);
+//	inverse_kin(sequence[0][5], 20, sequence[2][5]+10, 2);
+//	inverse_kin(sequence[0][4], 20, 170, 3);
+//	inverse_kin(sequence[0][0], 0, sequence[2][0], 4);
+//	flag = 0;
+//	delay_ms(100);
+//
+//	while(!flag);
+//	printf("4\n");
+//	for(int i = 0; i < 4; i++)
+//	{
+//		inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 4);
+//		delay_ms(100);
+//	}
+//	inverse_kin(sequence[0][0], 0, sequence[2][0], 1);
+//	inverse_kin(sequence[0][6], 20, sequence[2][6], 2);
+//	inverse_kin(sequence[0][5], 20, sequence[2][5], 3);
+//	inverse_kin(sequence[0][4], 0, sequence[2][4], 4);
+//	flag = 0;
+//	delay_ms(100);
+//}
 
 
 int main(void)
@@ -253,89 +111,157 @@ int main(void)
 	TIM2->CNT = 32768;
 	pos1_cnt = 32768;
 	pos4_cnt = 32768;
-	int move_left = 20;
-	int move_right = 10;
-	int low_height = 180;
+
+	iteration_time = 20;
+	servo_angle[0] = 50;
+	servo_angle[1] = 50;
+	set_servo_rolling();
 	while(1)
 	{
+//		side_walk();
+//		walk_straightforward();
+		set_servo_rolling();
+		wheel_robot_control();
 
-		while(!flag);
-		printf("1\n");
-		for(int i = 0; i < 4; i++)
-		{
-			inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 1);
-			delay_ms(100);
-		}
-		inverse_kin(sequence[0][4], 0, low_height, 1);
-		inverse_kin(sequence[0][0], move_left, sequence[2][0], 2);
-		inverse_kin(sequence[0][6], move_left, sequence[2][6], 3);
-		inverse_kin(sequence[0][5], 0, sequence[2][5], 4);
-		flag = 0;
-		delay_ms(100);
-
-		while(!flag);
-		printf("2\n");
-		for(int i = 0; i < 4; i++)
-		{
-			inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 2);
-			delay_ms(100);
-		}
-		inverse_kin(sequence[0][5], 0, sequence[2][5]+10, 1);
-		inverse_kin(sequence[0][4], move_left, sequence[2][4]+10, 2);
-		inverse_kin(sequence[0][0], move_left, sequence[2][0], 3);
-		inverse_kin(sequence[0][6], 0, low_height, 4);
-		flag = 0;
-		delay_ms(100);
-
-		while(!flag);
-		printf("3\n");
-		for(int i = 0; i < 4; i++)
-		{
-			inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 3);
-			delay_ms(100);
-		}
-		inverse_kin(sequence[0][6], 0, sequence[2][6]+10, 1);
-		inverse_kin(sequence[0][5], move_left, sequence[2][5]+10, 2);
-		inverse_kin(sequence[0][4], move_left, 170, 3);
-		inverse_kin(sequence[0][0], 0, sequence[2][0], 4);
-		flag = 0;
-		delay_ms(100);
-
-		while(!flag);
-		printf("4\n");
-		for(int i = 0; i < 4; i++)
-		{
-			inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 4);
-			delay_ms(100);
-		}
-		inverse_kin(sequence[0][0], 0, sequence[2][0], 1);
-		inverse_kin(sequence[0][6], move_left, low_height, 2);
-		inverse_kin(sequence[0][5], move_left, sequence[2][5], 3);
-		inverse_kin(sequence[0][4], 0, sequence[2][4], 4);
-		flag = 0;
-		delay_ms(100);
-
-//		set_servo_rolling();
-//		wheel_robot_control();
-
-//		walking();
-//		set_servo_angle(0, servo_angle[0]);
-//		set_servo_angle(1, servo_angle[1]);
-//		set_servo_angle(2, servo_angle[2]);
-//		set_servo_angle(3, servo_angle[3]);
-//		set_servo_angle(4, servo_angle[4]);
-//		set_servo_angle(5, servo_angle[5]);
-//		set_servo_angle(6, servo_angle[6]);
-//		set_servo_angle(7, servo_angle[7]);
-//		set_servo_angle(8, servo_angle[8]);
-//		set_servo_angle(9, servo_angle[9]);
-//		set_servo_angle(10, servo_angle[10]);
-//		set_servo_angle(11, servo_angle[11]);
-		delay_ms(20);
+		servo_test();
+		delay_ms(iteration_time);
 
 	}
+}
 
+void servo_test()
+{
+	set_servo_angle(0, servo_angle[0]);
+	set_servo_angle(1, servo_angle[1]);
+	set_servo_angle(2, servo_angle[2]);
+	set_servo_angle(3, servo_angle[3]);
+	set_servo_angle(4, servo_angle[4]);
+	set_servo_angle(5, servo_angle[5]);
+	set_servo_angle(6, servo_angle[6]);
+	set_servo_angle(7, servo_angle[7]);
+	set_servo_angle(8, servo_angle[8]);
+	set_servo_angle(9, servo_angle[9]);
+	set_servo_angle(10, servo_angle[10]);
+	set_servo_angle(11, servo_angle[11]);
+	delay_ms(iteration_time);
+}
 
+void walk_straightforward()
+{
+	while(!flag);
+	printf("1\n");
+	for(int i = 0; i < 4; i++)
+	{
+		inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 1);
+		delay_ms(100);
+	}
+	inverse_kin(sequence[0][4], 0, sequence[2][4], 1);
+	inverse_kin(sequence[0][0], 20, sequence[2][0], 2);
+	inverse_kin(sequence[0][6], 20, sequence[2][6], 3);
+	inverse_kin(sequence[0][5], 0, sequence[2][5], 4);
+	flag = 0;
+	delay_ms(100);
+
+	while(!flag);
+	printf("2\n");
+	for(int i = 0; i < 4; i++)
+	{
+		inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 2);
+		delay_ms(100);
+	}
+	inverse_kin(sequence[0][5], 0, sequence[2][5]+10, 1);
+	inverse_kin(sequence[0][4], 20, sequence[2][4]+10, 2);
+	inverse_kin(sequence[0][0], 20, sequence[2][0], 3);
+	inverse_kin(sequence[0][6], 0, sequence[2][6], 4);
+	flag = 0;
+	delay_ms(100);
+
+	while(!flag);
+	printf("3\n");
+	for(int i = 0; i < 4; i++)
+	{
+		inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 3);
+		delay_ms(100);
+	}
+	inverse_kin(sequence[0][6], 0, sequence[2][6]+10, 1);
+	inverse_kin(sequence[0][5], 20, sequence[2][5]+10, 2);
+	inverse_kin(sequence[0][4], 20, 170, 3);
+	inverse_kin(sequence[0][0], 0, sequence[2][0], 4);
+	flag = 0;
+	delay_ms(100);
+
+	while(!flag);
+	printf("4\n");
+	for(int i = 0; i < 4; i++)
+	{
+		inverse_kin(sequence[0][i], sequence[1][i], sequence[2][i], 4);
+		delay_ms(100);
+	}
+	inverse_kin(sequence[0][0], 0, sequence[2][0], 1);
+	inverse_kin(sequence[0][6], 20, sequence[2][6], 2);
+	inverse_kin(sequence[0][5], 20, sequence[2][5], 3);
+	inverse_kin(sequence[0][4], 0, sequence[2][4], 4);
+	flag = 0;
+	delay_ms(100);
+}
+
+void side_walk()
+{
+	while(!flag);
+	printf("1\n");
+	for(int i = 0; i < 4; i++)
+	{
+		inverse_kin(sequence_side[0][i], sequence_side[1][i], sequence_side[2][i], 1);
+		delay_ms(100);
+	}
+	inverse_kin(sequence_side[0][4], sequence_side[1][4], sequence_side[2][4], 1);
+	inverse_kin(sequence_side[0][0], sequence_side[1][0]+10, sequence_side[2][0], 2);
+	inverse_kin(sequence_side[0][6], sequence_side[1][6]+10, sequence_side[2][6], 3);
+	inverse_kin(sequence_side[0][5], sequence_side[1][5], sequence_side[2][5], 4);
+	flag = 0;
+	delay_ms(100);
+
+	while(!flag);
+	printf("2\n");
+	for(int i = 0; i < 4; i++)
+	{
+		inverse_kin(sequence_side[0][i], sequence_side[1][i], sequence_side[2][i], 2);
+		delay_ms(100);
+	}
+	inverse_kin(sequence_side[0][5], sequence_side[1][5], sequence_side[2][5]+10, 1);
+	inverse_kin(sequence_side[0][4], sequence_side[1][4]+10, sequence_side[2][4]+10, 2);
+	inverse_kin(sequence_side[0][0], sequence_side[1][0]+10, sequence_side[2][0], 3);
+	inverse_kin(sequence_side[0][6], sequence_side[1][6], sequence_side[2][6], 4);
+	flag = 0;
+	delay_ms(100);
+
+	while(!flag);
+	printf("3\n");
+	for(int i = 0; i < 4; i++)
+	{
+		inverse_kin(sequence_side[0][i], sequence_side[1][i], sequence_side[2][i], 3);
+		delay_ms(100);
+	}
+	inverse_kin(sequence_side[0][6], sequence_side[1][6], sequence_side[2][6]+10, 1);
+	inverse_kin(sequence_side[0][5], sequence_side[1][5]+10, sequence_side[2][5]+10, 2);
+	inverse_kin(sequence_side[0][4], sequence_side[1][4]+10, 170, 3);
+	inverse_kin(sequence_side[0][0], sequence_side[1][0], sequence_side[2][0], 4);
+	flag = 0;
+	delay_ms(100);
+
+	while(!flag);
+	printf("4\n");
+	for(int i = 0; i < 4; i++)
+	{
+		inverse_kin(sequence_side[0][i], sequence_side[1][i], sequence_side[2][i], 4);
+		delay_ms(100);
+	}
+	inverse_kin(sequence_side[0][0], sequence_side[1][0], sequence_side[2][0], 1);
+	inverse_kin(sequence_side[0][6], sequence_side[1][6]+10, sequence_side[2][6], 2);
+	inverse_kin(sequence_side[0][5], sequence_side[1][5]+10, sequence_side[2][5], 3);
+	inverse_kin(sequence_side[0][4], sequence_side[1][4], sequence_side[2][4], 4);
+	flag = 0;
+	delay_ms(100);
 }
 
 void inverse_kin(int x, int y, int z, uint8_t leg)
@@ -401,8 +327,22 @@ void inverse_kin(int x, int y, int z, uint8_t leg)
 		default:
 			break;
 	}
+}
 
-
+void set_servo_rolling()
+{
+	set_servo_angle(0, 60);
+	set_servo_angle(1, 0);
+	set_servo_angle(2, 130);
+	set_servo_angle(3, 70);
+	set_servo_angle(4, 0);
+	set_servo_angle(5, 101);
+	set_servo_angle(6, 91);
+	set_servo_angle(7, 140);
+	set_servo_angle(8, 66);
+	set_servo_angle(9, 135);
+	set_servo_angle(10, 153);
+	set_servo_angle(11, 27);
 }
 
 void wheel_robot_control()
